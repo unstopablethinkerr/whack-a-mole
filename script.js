@@ -34,6 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(moleInterval);
         updateDisplay();
         gameGrid.innerHTML = '';
+        startButton.classList.remove('hidden');
+        replayButton.classList.add('hidden');
     }
 
     function generateHoles() {
@@ -86,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         level++;
         moleSpeed -= 100; // Increase difficulty by reducing mole speed
         if (moleSpeed < 500) moleSpeed = 500; // Cap the minimum mole speed
+        clearInterval(moleInterval);
         startMoleInterval();
     }
 
@@ -99,7 +102,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-
-    // Start the game automatically
-    startGame();
 });
