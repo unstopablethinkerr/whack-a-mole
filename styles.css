@@ -12,12 +12,17 @@ body {
     overflow: hidden;
 }
 
-.container {
-    text-align: center;
+.frame {
     width: 100%;
     max-width: 600px;
     padding: 10px;
     box-sizing: border-box;
+    overflow: hidden;
+}
+
+.container {
+    text-align: center;
+    width: 100%;
 }
 
 header, main, footer {
@@ -53,6 +58,10 @@ button:hover {
 button:active {
     transform: scale(0.95);
     background-color: #4a8e4b;
+}
+
+.hidden {
+    display: none;
 }
 
 #instructions p {
@@ -103,8 +112,9 @@ button:active {
     bottom: -100%;
     width: 100%;
     height: 100%;
-    background-color: #795548;
-    border-radius: 50%;
+    background-image: url('mole.png');
+    background-size: cover;
+    background-position: center;
     transition: bottom 0.3s;
 }
 
