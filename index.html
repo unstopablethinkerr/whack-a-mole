@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whack-a-Mole</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Whack-a-Mole</h1>
+            <button id="startButton">Start Game</button>
+            <div id="instructions">
+                <p>Click on the moles as they pop up from the holes. Try to click as many as possible within the time limit!</p>
+            </div>
+            <div id="scoreDisplay">
+                <p>Score: <span id="score">0</span></p>
+                <p>Time Left: <span id="timer">0</span></p>
+            </div>
+        </header>
+        <main>
+            <div id="gameGrid">
+                <!-- Mole holes will be dynamically generated here -->
+            </div>
+        </main>
+        <footer>
+            <button id="replayButton">Replay</button>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
