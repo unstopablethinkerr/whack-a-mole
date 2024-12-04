@@ -93,10 +93,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     gameGrid.addEventListener('click', (event) => {
-        if (event.target.classList.contains('hole') && event.target.classList.contains('active')) {
+        if (event.target.classList.contains('mole') && event.target.parentElement.classList.contains('active')) {
             score++;
             updateDisplay();
-            event.target.classList.remove('active');
+            event.target.parentElement.classList.remove('active');
             if (score % 10 === 0) {
                 nextLevel();
             }
