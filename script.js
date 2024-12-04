@@ -3,12 +3,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const replayButton = document.getElementById('replayButton');
     const scoreDisplay = document.getElementById('score');
     const timerDisplay = document.getElementById('timer');
+    const levelDisplay = document.getElementById('level');
     const gameGrid = document.getElementById('gameGrid');
 
     let score = 0;
     let timeLeft = 30; // 30 seconds time limit
+    let level = 1;
     let timer;
     let moleInterval;
+    let moleSpeed = 1500; // Initial mole speed
 
     startButton.addEventListener('click', startGame);
     replayButton.addEventListener('click', startGame);
@@ -18,11 +21,15 @@ document.addEventListener('DOMContentLoaded', () => {
         generateHoles();
         startTimer();
         startMoleInterval();
+        startButton.classList.add('hidden');
+        replayButton.classList.add('hidden');
     }
 
     function resetGame() {
         score = 0;
         timeLeft = 30;
+        level = 1;
+        moleSpeed = 1500;
         clearInterval(timer);
         clearInterval(moleInterval);
         updateDisplay();
@@ -47,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (timeLeft <= 0) {
                 clearInterval(timer);
                 clearInterval(moleInterval);
-                alert(`Game Over! Your score is ${score}`);
+                gameOver();
             }
         }, 1000);
     }
@@ -60,12 +67,26 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 randomHole.classList.remove('active');
             }, 1000);
-        }, 1500);
+        }, moleSpeed);
     }
 
     function updateDisplay() {
         scoreDisplay.textContent = score;
         timerDisplay.textContent = timeLeft;
+        levelDisplay.textContent = level;
+    }
+
+    function gameOver() {
+        alert(`Game Over! Your score is ${score}`);
+        startButton.classList.remove('hidden');
+        replayButton.classList.remove('hidden');
+    }
+
+    function nextLevel() {
+        level++;
+        moleSpeed -= 100; // Increase difficulty by reducing mole speed
+        if (moleSpeed < 500) moleSpeed = 500; // Cap the minimum mole speed
+        startMoleInterval();
     }
 
     gameGrid.addEventListener('click', (event) => {
@@ -73,6 +94,12 @@ document.addEventListener('DOMContentLoaded', () => {
             score++;
             updateDisplay();
             event.target.classList.remove('active');
+            if (score % 10 === 0) {
+                nextLevel();
+            }
         }
     });
+
+    // Start the game automatically
+    startGame();
 });
