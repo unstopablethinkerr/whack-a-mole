@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameGrid = document.getElementById('gameGrid');
 
     let score = 0;
-    let timeLeft = 30; // 30 seconds time limit
+    let timeLeft = 30; // Initial time for each level
     let level = 1;
     let timer;
     let moleInterval;
@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function startTimer() {
+        clearInterval(timer); // Clear any existing timer
         timer = setInterval(() => {
             timeLeft--;
             updateDisplay();
@@ -62,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function startMoleInterval() {
+        clearInterval(moleInterval); // Clear any existing mole interval
         moleInterval = setInterval(() => {
             const holes = document.querySelectorAll('.hole');
             const randomHole = holes[Math.floor(Math.random() * holes.length)];
@@ -88,8 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
         level++;
         moleSpeed -= 100; // Increase difficulty by reducing mole speed
         if (moleSpeed < 500) moleSpeed = 500; // Cap the minimum mole speed
-        clearInterval(moleInterval);
-        startMoleInterval();
+        timeLeft = 30; // Reset the timer for the new level
+        updateDisplay(); // Update the display immediately
+        startTimer(); // Restart the timer
+        startMoleInterval(); // Restart the mole interval with updated speed
     }
 
     gameGrid.addEventListener('click', (event) => {
