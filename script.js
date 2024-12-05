@@ -105,8 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     gameGrid.addEventListener('click', (event) => {
-        if (event.target.classList.contains('hole') && event.target.classList.contains('active')) {
-            const mole = event.target.querySelector('.mole');
+        const hole = event.target.closest('.hole');
+        if (hole && hole.classList.contains('active')) {
+            const mole = hole.querySelector('.mole');
+
             if (mole.classList.contains('red-mole')) {
                 redMoleChances--;
                 updateDisplay();
@@ -118,10 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 score++;
                 updateDisplay();
-                event.target.classList.remove('active');
-                if (score % 10 === 0) {
-                    nextLevel();
-                }
+                hole.classList.remove('active'); // Remove the active state from the hole
+            }
+
+            if (score % 10 === 0) {
+                nextLevel();
             }
         }
     });
