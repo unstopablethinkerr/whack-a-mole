@@ -4,11 +4,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const scoreDisplay = document.getElementById('score');
     const timerDisplay = document.getElementById('timer');
     const levelDisplay = document.getElementById('level');
+    const redMoleChancesDisplay = document.getElementById('redMoleChances');
     const gameGrid = document.getElementById('gameGrid');
 
     let score = 0;
-    let timeLeft = 30; // Initial time for each level
+    let timeLeft = 30; // 30 seconds time limit
     let level = 1;
+    let redMoleChances = 3;
     let timer;
     let moleInterval;
     let moleSpeed = 1500; // Initial mole speed
@@ -29,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         score = 0;
         timeLeft = 30;
         level = 1;
+        redMoleChances = 3;
         moleSpeed = 1500;
         clearInterval(timer);
         clearInterval(moleInterval);
@@ -50,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function startTimer() {
-        clearInterval(timer); // Clear any existing timer
         timer = setInterval(() => {
             timeLeft--;
             updateDisplay();
@@ -63,13 +65,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function startMoleInterval() {
-        clearInterval(moleInterval); // Clear any existing mole interval
         moleInterval = setInterval(() => {
             const holes = document.querySelectorAll('.hole');
             const randomHole = holes[Math.floor(Math.random() * holes.length)];
+            const mole = randomHole.querySelector('.mole');
+            const isRedMole = Math.random() < 0.2; // 20% chance of red mole
+            if (isRedMole) {
+                mole.classList.add('red-mole');
+            } else {
+                mole.classList.remove('red-mole');
+            }
             randomHole.classList.add('active');
             setTimeout(() => {
                 randomHole.classList.remove('active');
+                mole.classList.remove('red-mole');
             }, 1000);
         }, moleSpeed);
     }
@@ -78,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         scoreDisplay.textContent = score;
         timerDisplay.textContent = timeLeft;
         levelDisplay.textContent = level;
+        redMoleChancesDisplay.textContent = redMoleChances;
     }
 
     function gameOver() {
@@ -90,19 +100,28 @@ document.addEventListener('DOMContentLoaded', () => {
         level++;
         moleSpeed -= 100; // Increase difficulty by reducing mole speed
         if (moleSpeed < 500) moleSpeed = 500; // Cap the minimum mole speed
-        timeLeft = 30; // Reset the timer for the new level
-        updateDisplay(); // Update the display immediately
-        startTimer(); // Restart the timer
-        startMoleInterval(); // Restart the mole interval with updated speed
+        clearInterval(moleInterval);
+        startMoleInterval();
     }
 
     gameGrid.addEventListener('click', (event) => {
-        if (event.target.classList.contains('mole') && event.target.parentElement.classList.contains('active')) {
-            score++;
-            updateDisplay();
-            event.target.parentElement.classList.remove('active');
-            if (score % 10 === 0) {
-                nextLevel();
+        if (event.target.classList.contains('hole') && event.target.classList.contains('active')) {
+            const mole = event.target.querySelector('.mole');
+            if (mole.classList.contains('red-mole')) {
+                redMoleChances--;
+                updateDisplay();
+                if (redMoleChances <= 0) {
+                    clearInterval(timer);
+                    clearInterval(moleInterval);
+                    gameOver();
+                }
+            } else {
+                score++;
+                updateDisplay();
+                event.target.classList.remove('active');
+                if (score % 10 === 0) {
+                    nextLevel();
+                }
             }
         }
     });
