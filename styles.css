@@ -118,6 +118,10 @@ button:active {
     transition: bottom 0.3s;
 }
 
+.red-mole {
+    background-image: url('redmole.png');
+}
+
 .hole.active .mole {
     bottom: 0;
 }
